@@ -1,33 +1,76 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1257">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="disks.css">
 	</head>	
 	<body>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="disks.js"></script>
 	<h1>OSK PD</h1>
-	<h5>Artis Ozolin�	ao10054; Dzintars Buks	dk11064; Dzintars Rajevs	dr07021; Edgars Kemers	ek11137; Liene Rieksta	lr11118;</h5>
+	<h5>Artis Ozoliņš ao10054; Dzintars Buks dk11064; Dzintars Rājevs dr07021; Edgars Ķemers ek11137; Liene Rieksta lr11118;</h5>
+	<p>Tēlojot procesu "Gribu datus", līdzko jums ir nepieciešami kādi dati nospiediet atbilstošo cilinda pogu, kurā atrodas jūsu dati. (Pogām iekavās norādīti ātrie taustiņi)</p>
+	<div>
+		<button onclick="lenak()">Lēnāk (-)</button>
+		<button onclick="atrak()">Ātrāk (=)</button>
+		<br>
+		<button onclick="pievieno(0)">Cilindrs 1 (1)</button>
+		<button onclick="pievieno(1)">Cilindrs 2 (2)</button>
+		<button onclick="pievieno(2)">Cilindrs 3 (3)</button>
+		<button onclick="pievieno(3)">Cilindrs 4 (4)</button>
+		<button onclick="pievieno(4)">Cilindrs 5 (5)</button>
+		<button onclick="pievieno(5)">Cilindrs 6 (6)</button>
+		<button onclick="pievieno(6)">Cilindrs 7 (7)</button>
+		<button onclick="pievieno(7)">Cilindrs 8 (8)</button>
+		<button onclick="pievieno(8)">Cilindrs 9 (9)</button>
+	</div>
+	<div>
+		<table id="gajieni" border="1">
+			<tr id="t_cil">
+				<th>Cilindrs</th>
+			</tr>
+			<tr id="t_p_0">
+				<td>FCFS</td>
+			</tr>
+			<tr id="t_p_1">
+				<td>SSTF</td>
+			</tr>
+			<tr id="t_p_2">
+				<td>SCAN</td>
+			</tr>
+			<tr id="t_p_3">
+				<td>C-SCAN</td>
+			</tr>
+			<tr id="t_p_4">
+				<td>LOOK</td>
+			</tr>
+		</table>
+	</div>
+	<div class="clearfix"></div>
 	<div id="FCFS_block" class="bloks">
-	<img src="disks.png" alt="FCFS disks" id="disks_0" class="disks">
-	<img src="adata.png" alt="FCFS adata" id="adata_0" class="adata">
+		<h4>FCFS disks</h4>
+		<img src="adata.png" alt="FCFS adata" id="adata_0" class="adata">
+		<img src="disks.png" alt="FCFS disks" id="disks_0" class="disks">
 	</div>
 	<div id="SSTF_block" class="bloks">
-	<img src="disks.png" alt="SSTF disks" id="disks_1" class="disks">
-	<img src="adata.png" alt="SSTF adata" id="adata_1" class="adata">
+		<h4>SSTF disks</h4>
+		<img src="adata.png" alt="SSTF adata" id="adata_1" class="adata">
+		<img src="disks.png" alt="SSTF disks" id="disks_1" class="disks">
 	</div>
 	<div id="SCAN_block" class="bloks">
-	<img src="disks.png" alt="SCAN disks" id="disks_2" class="disks">
-	<img src="adata.png" alt="SCAN adata" id="adata_2" class="adata">
+		<h4>SCAN disks</h4>
+		<img src="adata.png" alt="SCAN adata" id="adata_2" class="adata">
+		<img src="disks.png" alt="SCAN disks" id="disks_2" class="disks">
 	</div>
 	<div id="C-SCAN_block" class="bloks">
-	<img src="disks.png" alt="C-SCAN disks" id="disks_3" class="disks">
-	<img src="adata.png" alt="C-SCAN adata" id="adata_3" class="adata">
+		<h4>C-SCAN disks</h4>
+		<img src="adata.png" alt="C-SCAN adata" id="adata_3" class="adata">
+		<img src="disks.png" alt="C-SCAN disks" id="disks_3" class="disks">
 	</div>
 	<div id="LOOK_block" class="bloks">
-	<img src="disks.png" alt="LOOK disks" id="disks_4" class="disks">
-	<img src="adata.png" alt="LOOK adata" id="adata_4" class="adata">
+		<h4>LOOK disks</h4>
+		<img src="adata.png" alt="LOOK adata" id="adata_4" class="adata">
+		<img src="disks.png" alt="LOOK disks" id="disks_4" class="disks">
 	</div>
 	</body>
 </html>
