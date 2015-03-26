@@ -10,9 +10,9 @@ var atrodas = [-1,-1,-1,-1,-1];
 var virziens = [1,1,1,1,1];
 var solis = 1;
 var lasa_datus = 250;
-var cikls = 20;
-var cikls_max=100;
-var cikls_min=5;
+var cikls = 40;
+var cikls_max=200;
+var cikls_min=0;
 var adatu_bidisana;
 var nobide = 15;
 function notirit()
@@ -37,17 +37,20 @@ function nakamais_FCFS(a)
 {
 	if (rinda.length > sakums[a]+1)
 	{
+		document.getElementById("disks_"+a).classList.add("griezas");
 		dodas[a]=sakums[a]+1;
 		sakums[a]=sakums[a]+1;
 		return cilindri[rinda[dodas[a]]];
 	}
 	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
 	return 0;
 }
 function nakamais_SSTF(a)
 {
 	if (rinda.length > sakums[a]+1)
 	{
+		document.getElementById("disks_"+a).classList.add("griezas");
 		var dos = -1;
 		for(var att=0;att<11;att++)
 		{
@@ -71,12 +74,14 @@ function nakamais_SSTF(a)
 		}
 	}
 	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
 	return 0;
 }
 function nakamais_C_SCAN(a)
 {
 	if (rinda.length > sakums[a]+1)
 	{
+		document.getElementById("disks_"+a).classList.add("griezas");
 		var dos = -1;
 		for(var att=0;att<11;att++)
 		{
@@ -112,12 +117,14 @@ function nakamais_C_SCAN(a)
 		}
 	}	
 	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
 	return 0;
 }
 function nakamais_SCAN(a)
 {
 	if (rinda.length > sakums[a]+1)
 	{
+		document.getElementById("disks_"+a).classList.add("griezas");
 		var dos = -1;
 		if(adata[a] == cilindri[8])
 		{
@@ -162,12 +169,14 @@ function nakamais_SCAN(a)
 		}
 	}
 	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
 	return 0;
 }
 function nakamais_LOOK(a)
 {
 	if (rinda.length > sakums[a]+1)
 	{
+		document.getElementById("disks_"+a).classList.add("griezas");
 		var dos = -1;
 		//alert(virziens[a]);
 		for(var att=0;att<11;att++)
@@ -197,11 +206,13 @@ function nakamais_LOOK(a)
 		}
 	}
 	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
 	return 0;
 }
 function bida_adatas()
 {
 	clearInterval(adatu_bidisana);
+	document.getElementById("i_atr").value=cikls_max-cikls;
 	for(var i=0; i <adata.length; i++)
 	{
 		if (adata_gaida[i] > Date.now())
@@ -210,12 +221,14 @@ function bida_adatas()
 		}
 		else if(adata[i] != adata_bidas[i])
 		{
+			document.getElementById("adata_"+i).classList.remove("lasa");
 			adata[i] = adata[i]-(Math.sign(adata[i]-adata_bidas[i])*Math.min(Math.abs(adata[i]-adata_bidas[i]),solis));
 			document.getElementById("adata_"+i).style.left = adata[i]+nobide+"px";
 			//alert(adata[i]);
 		}
 		else if(adata[i] == adata_bidas[i])
 		{
+			document.getElementById("adata_"+i).classList.remove("lasa");
 			while(rinda.length > sakums[i]+1 && izpildits[i][sakums[i]+1] == 1)
 			{
 				sakums[i]=sakums[i]+1;
@@ -225,6 +238,9 @@ function bida_adatas()
 				document.getElementById("m_"+i+"_"+dodas[i]).classList.add("darits");
 				izpildits[i][dodas[i]]=1;
 				atrodas[i]=rinda[dodas[i]];
+				//datu ielase
+				adata_gaida[i] = Date.now() + lasa_datus;
+				document.getElementById("adata_"+i).classList.add("lasa");
 				dodas[i]=-1;
 			}
 			var merkis
@@ -254,8 +270,6 @@ function bida_adatas()
 			}
 			if(merkis != -1)
 			{
-				//uzsktada gaidīšanu
-				adata_gaida[i] = Date.now() + lasa_datus;
 				//izvēlas jauno gala mērķi
 				adata_bidas[i] = merkis;
 			}

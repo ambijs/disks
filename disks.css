@@ -1,11 +1,41 @@
+@-webkit-keyframes griezas {  
+  0% { background-image: url("disks1.png");}
+  33% { background-image: url("disks2.png");}
+  66% { background-image: url("disks3.png");}
+  100% { background-image: url("disks1.png");}
+}
+.griezas{
+  -webkit-animation-name: griezas;  
+  -webkit-animation-iteration-count: infinite;  
+  -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+  -webkit-animation-duration: 1.0s; 
+}
+@-webkit-keyframes lasa {  
+  0% { background-image: url("adata1.png");}
+  33% { background-image: url("adata2.png");}
+  66% { background-image: url("adata3.png");}
+}
+.lasa{
+  -webkit-animation-name: lasa;  
+  -webkit-animation-iteration-count: infinite;  
+  -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+  -webkit-animation-duration: 0.27s; 
+}
 .adata{
 	position:relative;
 	height:125px;
+	width:15px;
+	top:25px;
 	left:15px;
+	float:left;
+	background-image: url("adata.png");
 }
 .disks{
-	height:250px;
+	height:150px;
+	width:150px;
     border-radius:10px;
+	float:right;
+	background-image: url("disks.png");
 }
 .bloks{
 	float:left;
@@ -30,4 +60,8 @@
 h4
 {
 	text-align:center;
+}
+#i_atr
+{
+	width:22px;
 }
