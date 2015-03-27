@@ -12,9 +12,10 @@ var asolis=4;
 var lsolis=1;
 var solis = [lsolis,lsolis,lsolis,lsolis,lsolis];
 var lasa_datus = 250;
-var cikls = 40;
+var cikls = 60;
 var cikls_max = 200;
 var pcikls;
+var ccikls = 0;
 var ir_pauze = false;
 var cikls_min=0;
 var adatu_bidisana;
@@ -54,7 +55,7 @@ function atrak()
 function lenak()
 {
 	if(ir_pauze) pauze();
-	if(cikls<cikls_max)
+	if(cikls<cikls_max-5)
 	{
 		cikls = cikls + 5;
 	}
@@ -256,8 +257,18 @@ function bida_adatas()
 		return;
 	}
 	clearInterval(adatu_bidisana);
+	ccikls = ccikls + 1;
 	for(var i=0; i <adata.length; i++)
 	{
+		var nem = false;
+		if(cikls+150 > cikls_max || (ccikls%10 == 0 && cikls > cikls_min + 20) || (ccikls%30 == 0))
+		{
+			if(ccikls > 1000)
+			{
+				nem = true;
+			}
+			grafiki[i].addPoint([ccikls, adata[i]], false, nem);
+		}
 		if (adata_gaida[i] > Date.now())
 		{
 			//vel jagaida
@@ -283,14 +294,6 @@ function bida_adatas()
 				//datu ielase
 				adata_gaida[i] = Date.now() + lasa_datus;
 				document.getElementById("adata_"+i).classList.add("lasa");
-				/*if(izpildits[i] > 20)
-				{
-					grafiki[i].addPoint([(new Date()).getTime(), rinda[dodas[i]]], true, true);
-				}
-				else
-				{
-					grafiki[i].addPoint([(new Date()).getTime(), rinda[dodas[i]]], true, false);
-				}*/
 				dodas[i]=-1;
 			}
 			var merkis
@@ -329,6 +332,7 @@ function bida_adatas()
 			}
 		}
 	}
+	$('#container').highcharts().redraw();
 	adatu_bidisana = setInterval(bida_adatas, cikls);
 }
 function pievieno(cilindrs)
@@ -373,7 +377,7 @@ $(document).keyup(function(e) {
 $(function (){
 	adatu_bidisana = setInterval(bida_adatas, cikls);
 })
-/*$(function () {
+$(function () {
     $(document).ready(function () {
         Highcharts.setOptions({
             global: {
@@ -384,7 +388,7 @@ $(function (){
         $('#container').highcharts({
             chart: {
                 type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
+                animation: false,//Highcharts.svg, // don't animate in old IE
                 marginRight: 10,
                 events: {
                     load: function () {
@@ -400,50 +404,56 @@ $(function (){
                 text: 'Diska adatu pārvietošanās'
             },
             xAxis: {
-                type: 'datetime',
+                type: 'Laiks',
                 tickPixelInterval: 150
             },
             yAxis: {
                 title: {
-                    text: 'Cilindrs'
+                    text: 'Pozīcija'
                 },
                 plotLines: [{
                     value: 0,
                     width: 1,
                     color: '#808080'
-                }]
+                }],
+				max:100,
+				min:0
             },
             tooltip: {
                 formatter: function () {
                     return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
+                        Highcharts.numberFormat(this.x, 0) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 0);
                 }
             },
             legend: {
-                enabled: false
+                enabled: true
             },
             exporting: {
                 enabled: false
             },
             series: [{
                 name: 'FCFS',
-				data: [{y:0,x:(new Date()).getTime()}]
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
 				
             },{
                 name: 'SSTF',
-				data: [{y:0,x:(new Date()).getTime()}]
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
             },{
                 name: 'SCAN',
-				data: [{y:0,x:(new Date()).getTime()}]
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
             },{
                 name: 'C-SCAN',
-				data: [{y:0,x:(new Date()).getTime()}]
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
             },{
                 name: 'LOOK',
-				data: [{y:0,x:(new Date()).getTime()}]
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
             }]
         });
     });
 });
-*/
