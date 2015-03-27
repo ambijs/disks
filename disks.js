@@ -8,19 +8,44 @@ var sakums = [-1,-1,-1,-1,-1];
 var dodas = [-1,-1,-1,-1,-1];
 var atrodas = [-1,-1,-1,-1,-1];
 var virziens = [1,1,1,1,1];
-var solis = 1;
+var asolis=4;
+var lsolis=1;
+var solis = [lsolis,lsolis,lsolis,lsolis,lsolis];
 var lasa_datus = 250;
 var cikls = 40;
-var cikls_max=200;
+var cikls_max = 200;
+var pcikls;
+var ir_pauze = false;
 var cikls_min=0;
 var adatu_bidisana;
 var nobide = 15;
+var grafiki = new Array(5);
 function notirit()
 {
 	location.reload();
 }
+function pauze()
+{
+	if(!ir_pauze)
+	{
+		pcikls = cikls;
+		cikls = cikls_max;
+		for(var i=0; i <adata.length; i++)
+		{
+			document.getElementById("adata_"+i).classList.remove("lasa");
+			document.getElementById("disks_"+i).classList.remove("griezas");
+		}
+		ir_pauze = true;	
+	}
+	else
+	{
+		ir_pauze = false;
+		cikls = pcikls;
+	}
+}
 function atrak()
 {
+	if(ir_pauze) pauze();
 	if(cikls>cikls_min)
 	{
 		cikls = cikls - 5;
@@ -28,6 +53,7 @@ function atrak()
 }
 function lenak()
 {
+	if(ir_pauze) pauze();
 	if(cikls<cikls_max)
 	{
 		cikls = cikls + 5;
@@ -35,6 +61,7 @@ function lenak()
 }
 function nakamais_FCFS(a)
 {
+	solis[a]=lsolis;
 	if (rinda.length > sakums[a]+1)
 	{
 		document.getElementById("disks_"+a).classList.add("griezas");
@@ -44,10 +71,12 @@ function nakamais_FCFS(a)
 	}
 	atrodas[a]=-1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
 	return 0;
 }
 function nakamais_SSTF(a)
 {
+	solis[a]=lsolis;
 	if (rinda.length > sakums[a]+1)
 	{
 		document.getElementById("disks_"+a).classList.add("griezas");
@@ -75,10 +104,12 @@ function nakamais_SSTF(a)
 	}
 	atrodas[a]=-1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
 	return 0;
 }
 function nakamais_C_SCAN(a)
 {
+	solis[a]=lsolis;
 	if (rinda.length > sakums[a]+1)
 	{
 		document.getElementById("disks_"+a).classList.add("griezas");
@@ -108,20 +139,24 @@ function nakamais_C_SCAN(a)
 			if(adata[a] == cilindri[8])
 			{
 				atrodas[a]=-1;
+				solis[a]=asolis;
 				return 0;
 			}
 			else if(adata[a] != 0)
 			{
+				atrodas[a]=8;
 				return cilindri[8];
 			}
 		}
 	}	
 	atrodas[a]=-1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
 	return 0;
 }
 function nakamais_SCAN(a)
 {
+	solis[a]=lsolis;
 	if (rinda.length > sakums[a]+1)
 	{
 		document.getElementById("disks_"+a).classList.add("griezas");
@@ -159,6 +194,7 @@ function nakamais_SCAN(a)
 			if(virziens[a] == -1)
 			{
 				atrodas[a]=-1;
+				solis[a]=asolis;
 				return 0;
 			}
 			else if(adata[a] != 0)
@@ -170,10 +206,12 @@ function nakamais_SCAN(a)
 	}
 	atrodas[a]=-1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
 	return 0;
 }
 function nakamais_LOOK(a)
 {
+	solis[a]=lsolis;
 	if (rinda.length > sakums[a]+1)
 	{
 		document.getElementById("disks_"+a).classList.add("griezas");
@@ -207,12 +245,17 @@ function nakamais_LOOK(a)
 	}
 	atrodas[a]=-1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
 	return 0;
 }
 function bida_adatas()
 {
-	clearInterval(adatu_bidisana);
 	document.getElementById("i_atr").value=cikls_max-cikls;
+	if(cikls >= cikls_max)
+	{
+		return;
+	}
+	clearInterval(adatu_bidisana);
 	for(var i=0; i <adata.length; i++)
 	{
 		if (adata_gaida[i] > Date.now())
@@ -222,9 +265,8 @@ function bida_adatas()
 		else if(adata[i] != adata_bidas[i])
 		{
 			document.getElementById("adata_"+i).classList.remove("lasa");
-			adata[i] = adata[i]-(Math.sign(adata[i]-adata_bidas[i])*Math.min(Math.abs(adata[i]-adata_bidas[i]),solis));
+			adata[i] = adata[i]-(Math.sign(adata[i]-adata_bidas[i])*Math.min(Math.abs(adata[i]-adata_bidas[i]),solis[i]));
 			document.getElementById("adata_"+i).style.left = adata[i]+nobide+"px";
-			//alert(adata[i]);
 		}
 		else if(adata[i] == adata_bidas[i])
 		{
@@ -241,6 +283,14 @@ function bida_adatas()
 				//datu ielase
 				adata_gaida[i] = Date.now() + lasa_datus;
 				document.getElementById("adata_"+i).classList.add("lasa");
+				/*if(izpildits[i] > 20)
+				{
+					grafiki[i].addPoint([(new Date()).getTime(), rinda[dodas[i]]], true, true);
+				}
+				else
+				{
+					grafiki[i].addPoint([(new Date()).getTime(), rinda[dodas[i]]], true, false);
+				}*/
 				dodas[i]=-1;
 			}
 			var merkis
@@ -296,34 +346,104 @@ function pievieno(cilindrs)
 		para.id = "m_"+i+"_"+(rinda.length-1);
 		element.appendChild(para);
 	}
-	/*if(cilindrs==8)
-	{
-		alert(izpildits[1]);//1,0
-		alert(sakums[1]);//-1
-		alert(dodas[1]);//1
-		alert(atrodas[1]);//0
-		alert(adata[i]);//nezina
-		alert(adata_bidas[i]);//nezina
-	}*/
 }
 $(document).keyup(function(e) {
 	//alert(e.keyCode);
-	if (e.keyCode > 48 && e.keyCode < 58){
+	if (e.keyCode > 48 && e.keyCode < 58)//1-9
+	{
 		pievieno(e.keyCode-49)
 	}
-	else if(e.keyCode == 189)
+	else if(e.keyCode == 189)//-
 	{
 		lenak();
 	}
-	else if(e.keyCode == 187)
+	else if(e.keyCode == 187)//=
 	{
 		atrak();
 	}
-	else if(e.keyCode == 46)
+	else if(e.keyCode == 46)//delete
 	{
 		notirit();
+	}
+	else if(e.keyCode == 80)//p
+	{
+		pauze();
 	}
 });
 $(function (){
 	adatu_bidisana = setInterval(bida_adatas, cikls);
 })
+/*$(function () {
+    $(document).ready(function () {
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+
+        $('#container').highcharts({
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: function () {
+						grafiki[0]=this.series[0];
+						grafiki[1]=this.series[1];
+						grafiki[2]=this.series[2];
+						grafiki[3]=this.series[3];
+						grafiki[4]=this.series[4];
+                    }
+                }
+            },
+            title: {
+                text: 'Diska adatu pārvietošanās'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Cilindrs'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'FCFS',
+				data: [{y:0,x:(new Date()).getTime()}]
+				
+            },{
+                name: 'SSTF',
+				data: [{y:0,x:(new Date()).getTime()}]
+            },{
+                name: 'SCAN',
+				data: [{y:0,x:(new Date()).getTime()}]
+            },{
+                name: 'C-SCAN',
+				data: [{y:0,x:(new Date()).getTime()}]
+            },{
+                name: 'LOOK',
+				data: [{y:0,x:(new Date()).getTime()}]
+            }]
+        });
+    });
+});
+*/

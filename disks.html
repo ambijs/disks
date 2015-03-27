@@ -6,6 +6,8 @@
 	</head>	
 	<body>
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="disks.js"></script>
 	<h1>OSK PD</h1>
 	<h5>Artis Ozoliņš ao10054; Dzintars Buks dk11064; Dzintars Rājevs dr07021; Edgars Ķemers ek11137; Liene Rieksta lr11118;</h5>
@@ -14,6 +16,7 @@
 		<button onclick="lenak()">Lēnāk (-)</button>
 		<input id="i_atr" disabled></input>
 		<button onclick="atrak()">Ātrāk (=)</button>
+		<button onclick="pauze()">Pauze (p)</button>
 		<button onclick="notirit()">Notīrīt datus (delete)</button>
 		<br>
 		<button onclick="pievieno(0)">Cilindrs 1 (1)</button>
@@ -48,6 +51,7 @@
 			</tr>
 		</table>
 	</div>
+	<!--<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
 	<div class="clearfix"></div>
 	<div id="FCFS_block" class="bloks">
 		<h4>FCFS disks</h4>
