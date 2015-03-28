@@ -9,13 +9,14 @@
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="disks.js"></script>
-	<h1>OSK PD</h1>
-	<h5>Artis Ozoliņš ao10054; Dzintars Buks dk11064; Dzintars Rājevs dr07021; Edgars Ķemers ek11137; Liene Rieksta lr11118;</h5>
-	<p>Tēlojot procesu "Gribu datus", līdzko jums ir nepieciešami kādi dati nospiediet atbilstošo cilinda pogu, kurā atrodas jūsu dati. (Pogām iekavās norādīti ātrie taustiņi)</p>
+	<h1>OSK PD
+	<span id="grupa">Artis Ozoliņš ao10054; Dzintars Buks dk11064; Dzintars Rājevs dr07021; Edgars Ķemers ek11137; Liene Rieksta lr11118;<span>
+	</h1>
+	<p>Tēlojot procesu "Gribu datus", līdzko Jums ir nepieciešami kādi dati, nospiediet atbilstošo cilinda pogu, kurā atrodas jūsu dati (Pogām iekavās norādīti ātrie taustiņi).</p>
 	<div>
 		<button onclick="lenak()">Lēnāk (-)</button>
 		<input id="i_atr" disabled></input>
-		<button onclick="atrak()">Ātrāk (=)</button>
+		<button onclick="atrak()">Ātrāk (+)</button>
 		<button onclick="pauze()">Pauze (p)</button>
 		<button onclick="notirit()">Notīrīt datus (delete)</button>
 		<br>
@@ -49,9 +50,12 @@
 			<tr id="t_p_4">
 				<td>LOOK</td>
 			</tr>
+			<tr id="t_p_5">
+				<td>C-LOOK</td>
+			</tr>
 		</table>
 	</div>
-	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div id="container" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
 	<div class="clearfix"></div>
 	<div id="FCFS_block" class="bloks">
 		<h4>FCFS disks</h4>
@@ -77,6 +81,11 @@
 		<h4>LOOK disks</h4>
 		<div alt="LOOK adata" id="adata_4" class="adata"></div>
 		<div alt="LOOK disks" id="disks_4" class="disks"></div>
+	</div>
+	<div id="C-LOOK_block" class="bloks">
+		<h4>C-LOOK disks</h4>
+		<div alt="C-LOOK adata" id="adata_5" class="adata"></div>
+		<div alt="C-LOOK disks" id="disks_5" class="disks"></div>
 	</div>
 	</body>
 </html>

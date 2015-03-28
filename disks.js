@@ -1,26 +1,28 @@
-var adata=[0,0,0,0,0];
-var adata_bidas=[0,0,0,0,0];
-var adata_gaida=[0,0,0,0,0];
+var adata=[0,0,0,0,0,0];
+var adata_bidas=[0,0,0,0,0,0];
+var adata_gaida=[0,0,0,0,0,0];
 var cilindri=[10,20,30,40,50,60,70,80,90]
 var rinda = [];
-var izpildits = [[],[],[],[],[]];
-var sakums = [-1,-1,-1,-1,-1];
-var dodas = [-1,-1,-1,-1,-1];
-var atrodas = [-1,-1,-1,-1,-1];
-var virziens = [1,1,1,1,1];
-var asolis=4;
+var izpildits = [[],[],[],[],[],[]];
+var sakums = [-1,-1,-1,-1,-1,-1];
+var dodas = [-1,-1,-1,-1,-1,-1];
+var atrodas = [-1,-1,-1,-1,-1,-1];
+var virziens = [1,1,1,1,1,1];
+var asolis=10;
 var lsolis=1;
-var solis = [lsolis,lsolis,lsolis,lsolis,lsolis];
+var solis = [lsolis,lsolis,lsolis,lsolis,lsolis,lsolis];
 var lasa_datus = 250;
 var cikls = 60;
 var cikls_max = 200;
 var pcikls;
 var ccikls = 0;
+var punkti=0;
+var punkti_max = 800*adata.length;
 var ir_pauze = false;
 var cikls_min=0;
 var adatu_bidisana;
 var nobide = 15;
-var grafiki = new Array(5);
+var grafiki = new Array(6);
 function notirit()
 {
 	location.reload();
@@ -249,6 +251,45 @@ function nakamais_LOOK(a)
 	solis[a]=asolis;
 	return 0;
 }
+function nakamais_C_LOOK(a)
+{
+	solis[a]=lsolis;
+	if (rinda.length > sakums[a]+1)
+	{
+		document.getElementById("disks_"+a).classList.add("griezas");
+		var dos = -1;
+		for(var att=0;att<11;att++)
+		{
+			for(var i=sakums[a]+1;i < rinda.length; i++)
+			{
+				if(izpildits[a][i] == 0 && rinda[i]-atrodas[a] == att)
+				{
+					dos = i;
+					break;
+				}
+			}
+			if (dos != -1)
+			{
+				break;
+			}
+		}
+		if(dos != -1)
+		{
+			dodas[a]=dos;
+			return cilindri[rinda[dodas[a]]];
+		}
+		else
+		{
+			atrodas[a]=-1;
+			solis[a]=asolis;
+			return 0;
+		}
+	}
+	atrodas[a]=-1;
+	document.getElementById("disks_"+a).classList.remove("griezas");
+	solis[a]=asolis;
+	return 0;
+}
 function bida_adatas()
 {
 	document.getElementById("i_atr").value=cikls_max-cikls;
@@ -260,14 +301,17 @@ function bida_adatas()
 	ccikls = ccikls + 1;
 	for(var i=0; i <adata.length; i++)
 	{
-		var nem = false;
 		if(cikls+150 > cikls_max || (ccikls%10 == 0 && cikls > cikls_min + 20) || (ccikls%30 == 0))
 		{
-			if(ccikls > 1000)
+			punkti = punkti +1;
+			if(punkti > punkti_max)
 			{
-				nem = true;
+				grafiki[i].addPoint([ccikls, adata[i]], false, true);
 			}
-			grafiki[i].addPoint([ccikls, adata[i]], false, nem);
+			else
+			{
+				grafiki[i].addPoint([ccikls, adata[i]], false, false);
+			}
 		}
 		if (adata_gaida[i] > Date.now())
 		{
@@ -317,6 +361,10 @@ function bida_adatas()
 			{
 				merkis = nakamais_LOOK(i);
 			}
+			else if(i == 5)
+			{
+				merkis = nakamais_C_LOOK(i);
+			}
 			else
 			{
 				merkis = 0;//cilindri[Math.round(Math.random()*100)%cilindri.length];
@@ -353,23 +401,28 @@ function pievieno(cilindrs)
 }
 $(document).keyup(function(e) {
 	//alert(e.keyCode);
-	if (e.keyCode > 48 && e.keyCode < 58)//1-9
+	//alert(e.shiftKey);
+	if (e.keyCode > 48 && e.keyCode < 58 && !e.ctrlKey && !e.shiftKey)//1-9
 	{
 		pievieno(e.keyCode-49)
 	}
-	else if(e.keyCode == 189)//-
+	else if (e.keyCode > 96 && e.keyCode < 106 && !e.ctrlKey && !e.shiftKey)//1-9 NumLk
+	{
+		pievieno(e.keyCode-97)
+	}
+	else if((e.keyCode == 189 && e.keyCode == 109) && !e.ctrlKey && !e.shiftKey)//-
 	{
 		lenak();
 	}
-	else if(e.keyCode == 187)//=
+	else if(((e.keyCode == 187 && e.shiftKey)|| (e.keyCode == 107 && !e.shiftKey)) && !e.ctrlKey)//+
 	{
 		atrak();
 	}
-	else if(e.keyCode == 46)//delete
+	else if(e.keyCode == 46 && !e.ctrlKey && !e.shiftKey)//delete
 	{
 		notirit();
 	}
-	else if(e.keyCode == 80)//p
+	else if(e.keyCode == 80 && !e.ctrlKey)//p
 	{
 		pauze();
 	}
@@ -397,6 +450,7 @@ $(function () {
 						grafiki[2]=this.series[2];
 						grafiki[3]=this.series[3];
 						grafiki[4]=this.series[4];
+						grafiki[5]=this.series[5];
                     }
                 }
             },
@@ -451,6 +505,10 @@ $(function () {
 				marker: {enabled: false}
             },{
                 name: 'LOOK',
+				data: [{y:0,x:ccikls}],
+				marker: {enabled: false}
+            },{
+                name: 'C-LOOK',
 				data: [{y:0,x:ccikls}],
 				marker: {enabled: false}
             }]
