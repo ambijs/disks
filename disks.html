@@ -12,7 +12,13 @@
 	<h1>OSK PD
 	<span id="grupa">Artis Ozoliņš ao10054; Dzintars Buks dk11064; Dzintars Rājevs dr07021; Edgars Ķemers ek11137; Liene Rieksta lr11118;<span>
 	</h1>
-	<p>Tēlojot procesu "Gribu datus", līdzko Jums ir nepieciešami kādi dati, nospiediet atbilstošo cilinda pogu, kurā atrodas jūsu dati (Pogām iekavās norādīti ātrie taustiņi).</p>
+	<p>Tēlojot procesu "Gribu datus", līdzko Jums ir nepieciešami kādi dati, nospiediet atbilstošo cilinda pogu, kurā atrodas jūsu dati (Pogām iekavās norādīti ātrie taustiņi).
+	Tabulā parādās cik ciklus gaidīts līdz saņem datus.
+	Viena cikla laikā adata pārvietojas <span id="cik_len" class="mainigais"></span> vienības.
+	Uz sākumu stāvokli pārvietojas ātrāk - <span id="cik_atr" class="mainigais"></span> vienības ciklā.
+	Dati tiek ielasīti <span id="dat_iel" class="mainigais"></span> ciklos.
+	Attālums starp cilindriem <span id="cil_att" class="mainigais"></span> vienības.
+	Sākuma stāvoklis ir <span id="sak_att" class="mainigais"></span> vienības no pirmā cilindra.</p>
 	<div>
 		<button onclick="lenak()">Lēnāk (-)</button>
 		<input id="i_atr" disabled></input>
@@ -34,24 +40,31 @@
 		<table id="gajieni" border="1">
 			<tr id="t_cil">
 				<th>Cilindrs</th>
+				<th>Kopā</th>
 			</tr>
 			<tr id="t_p_0">
 				<td>FCFS</td>
+				<td id="t_k_0">0</td>
 			</tr>
 			<tr id="t_p_1">
 				<td>SSTF</td>
+				<td id="t_k_1">0</td>
 			</tr>
 			<tr id="t_p_2">
 				<td>SCAN</td>
+				<td id="t_k_2">0</td>
 			</tr>
 			<tr id="t_p_3">
 				<td>C-SCAN</td>
+				<td id="t_k_3">0</td>
 			</tr>
 			<tr id="t_p_4">
 				<td>LOOK</td>
+				<td id="t_k_4">0</td>
 			</tr>
 			<tr id="t_p_5">
 				<td>C-LOOK</td>
+				<td id="t_k_5">0</td>
 			</tr>
 		</table>
 	</div>

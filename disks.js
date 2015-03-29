@@ -1,8 +1,10 @@
 var adata=[0,0,0,0,0,0];
 var adata_bidas=[0,0,0,0,0,0];
 var adata_gaida=[0,0,0,0,0,0];
-var cilindri=[10,20,30,40,50,60,70,80,90]
+var laiks_kopa=[0,0,0,0,0,0];
+var cilindri=[10,20,30,40,50,60,70,80,90];
 var rinda = [];
+var lrinda = [];
 var izpildits = [[],[],[],[],[],[]];
 var sakums = [-1,-1,-1,-1,-1,-1];
 var dodas = [-1,-1,-1,-1,-1,-1];
@@ -11,7 +13,7 @@ var virziens = [1,1,1,1,1,1];
 var asolis=10;
 var lsolis=1;
 var solis = [lsolis,lsolis,lsolis,lsolis,lsolis,lsolis];
-var lasa_datus = 250;
+var lasa_datus = 2;
 var cikls = 60;
 var cikls_max = 200;
 var pcikls;
@@ -62,6 +64,41 @@ function lenak()
 		cikls = cikls + 5;
 	}
 }
+function pabeiguso_skaits(r)
+{
+	var summa=0;
+	for(var i=0; i < adata.length; i++)
+	{
+		if(izpildits[i][r] < ccikls && izpildits[i][r] != -1)
+		{
+			summa = summa + 1;
+		}
+	}
+	return summa;
+}
+function kopa_laiks_formats()
+{
+	var summa;
+	var nod;
+	for(var i=0; i < adata.length; i++)
+	{
+		nod =document.getElementById("t_k_"+i)
+		for(var j=0; j < adata.length; j++)
+		{
+			nod.classList.remove("darits"+j);
+		}
+		summa = 0;
+		for(var j=0; j < adata.length; j++)
+		{
+			if(laiks_kopa[j] < laiks_kopa[i])
+			{
+				summa = summa + 1;
+			}
+		}
+		nod.classList.add("darits"+summa);
+		nod.innerHTML = laiks_kopa[i];
+	}
+}
 function nakamais_FCFS(a)
 {
 	solis[a]=lsolis;
@@ -70,6 +107,7 @@ function nakamais_FCFS(a)
 		document.getElementById("disks_"+a).classList.add("griezas");
 		dodas[a]=sakums[a]+1;
 		sakums[a]=sakums[a]+1;
+		document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 		return cilindri[rinda[dodas[a]]];
 	}
 	atrodas[a]=-1;
@@ -88,7 +126,7 @@ function nakamais_SSTF(a)
 		{
 			for(var i=sakums[a]+1;i < rinda.length; i++)
 			{
-				if(izpildits[a][i] == 0 && Math.abs(rinda[i]-atrodas[a]) == att)
+				if(izpildits[a][i] == -1 && Math.abs(rinda[i]-atrodas[a]) == att)
 				{
 					dos = i;
 					break;
@@ -102,6 +140,7 @@ function nakamais_SSTF(a)
 		if(dos != -1)
 		{
 			dodas[a]=dos;
+			document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 			return cilindri[rinda[dodas[a]]];
 		}
 	}
@@ -121,7 +160,7 @@ function nakamais_C_SCAN(a)
 		{
 			for(var i=sakums[a]+1;i < rinda.length; i++)
 			{
-				if(izpildits[a][i] == 0 && rinda[i]-atrodas[a] == att)
+				if(izpildits[a][i] == -1 && rinda[i]-atrodas[a] == att)
 				{
 					dos = i;
 					break;
@@ -135,6 +174,7 @@ function nakamais_C_SCAN(a)
 		if(dos != -1)
 		{
 			dodas[a]=dos;
+			document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 			return cilindri[rinda[dodas[a]]];
 		}
 		else
@@ -176,7 +216,7 @@ function nakamais_SCAN(a)
 		{
 			for(var i=sakums[a]+1;i < rinda.length; i++)
 			{
-				if(izpildits[a][i] == 0 && rinda[i]-atrodas[a] == att*virziens[a])
+				if(izpildits[a][i] == -1 && rinda[i]-atrodas[a] == att*virziens[a])
 				{
 					dos = i;
 					break;
@@ -190,6 +230,7 @@ function nakamais_SCAN(a)
 		if(dos != -1)
 		{
 			dodas[a]=dos;
+			document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 			return cilindri[rinda[dodas[a]]];
 		}
 		else
@@ -224,7 +265,7 @@ function nakamais_LOOK(a)
 		{
 			for(var i=sakums[a]+1;i < rinda.length; i++)
 			{
-				if(izpildits[a][i] == 0 && rinda[i]-atrodas[a] == att*virziens[a])
+				if(izpildits[a][i] == -1 && rinda[i]-atrodas[a] == att*virziens[a])
 				{
 					dos = i;
 					break;
@@ -238,6 +279,7 @@ function nakamais_LOOK(a)
 		if(dos != -1)
 		{
 			dodas[a]=dos;
+			document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 			return cilindri[rinda[dodas[a]]];
 		}
 		else
@@ -247,6 +289,7 @@ function nakamais_LOOK(a)
 		}
 	}
 	atrodas[a]=-1;
+	virziens[a]=1;
 	document.getElementById("disks_"+a).classList.remove("griezas");
 	solis[a]=asolis;
 	return 0;
@@ -262,7 +305,7 @@ function nakamais_C_LOOK(a)
 		{
 			for(var i=sakums[a]+1;i < rinda.length; i++)
 			{
-				if(izpildits[a][i] == 0 && rinda[i]-atrodas[a] == att)
+				if(izpildits[a][i] == -1 && rinda[i]-atrodas[a] == att)
 				{
 					dos = i;
 					break;
@@ -276,6 +319,7 @@ function nakamais_C_LOOK(a)
 		if(dos != -1)
 		{
 			dodas[a]=dos;
+			document.getElementById("m_"+a+"_"+dodas[a]).classList.add("dodas");
 			return cilindri[rinda[dodas[a]]];
 		}
 		else
@@ -313,9 +357,9 @@ function bida_adatas()
 				grafiki[i].addPoint([ccikls, adata[i]], false, false);
 			}
 		}
-		if (adata_gaida[i] > Date.now())
+		if (adata_gaida[i] > 0)
 		{
-			//vel jagaida
+			adata_gaida[i] = adata_gaida[i] -1;
 		}
 		else if(adata[i] != adata_bidas[i])
 		{
@@ -326,17 +370,19 @@ function bida_adatas()
 		else if(adata[i] == adata_bidas[i])
 		{
 			document.getElementById("adata_"+i).classList.remove("lasa");
-			while(rinda.length > sakums[i]+1 && izpildits[i][sakums[i]+1] == 1)
+			while(rinda.length > sakums[i]+1 && izpildits[i][sakums[i]+1] != -1)
 			{
 				sakums[i]=sakums[i]+1;
 			};
 			if(dodas[i] != -1)
 			{
-				document.getElementById("m_"+i+"_"+dodas[i]).classList.add("darits");
-				izpildits[i][dodas[i]]=1;
+				document.getElementById("m_"+i+"_"+dodas[i]).classList.add("darits"+pabeiguso_skaits(dodas[i]));
+				laiks_kopa[i] = laiks_kopa[i] + ccikls - lrinda[dodas[i]];
+				document.getElementById("m_"+i+"_"+dodas[i]).innerHTML = ccikls - lrinda[dodas[i]];
+				izpildits[i][dodas[i]]=ccikls;
 				atrodas[i]=rinda[dodas[i]];
 				//datu ielase
-				adata_gaida[i] = Date.now() + lasa_datus;
+				adata_gaida[i] = lasa_datus;
 				document.getElementById("adata_"+i).classList.add("lasa");
 				dodas[i]=-1;
 			}
@@ -360,6 +406,10 @@ function bida_adatas()
 			else if(i == 4)
 			{
 				merkis = nakamais_LOOK(i);
+				if(merkis == -1)
+				{
+					merkis = nakamais_LOOK(i);
+				}
 			}
 			else if(i == 5)
 			{
@@ -381,18 +431,20 @@ function bida_adatas()
 		}
 	}
 	$('#container').highcharts().redraw();
+	kopa_laiks_formats();
 	adatu_bidisana = setInterval(bida_adatas, cikls);
 }
 function pievieno(cilindrs)
 {
 	rinda.push(cilindrs);
+	lrinda.push(ccikls);
 	var element = document.getElementById("t_cil");
 	var para = document.createElement("td");
 	para.innerHTML = ""+(cilindrs+1);
 	element.appendChild(para);
 	for(var i=0; i < adata.length; i++)
 	{
-		izpildits[i].push(0);
+		izpildits[i].push(-1);
 		element = document.getElementById("t_p_"+i);
 		para = document.createElement("td");
 		para.id = "m_"+i+"_"+(rinda.length-1);
@@ -410,7 +462,7 @@ $(document).keyup(function(e) {
 	{
 		pievieno(e.keyCode-97)
 	}
-	else if((e.keyCode == 189 && e.keyCode == 109) && !e.ctrlKey && !e.shiftKey)//-
+	else if((e.keyCode == 189 || e.keyCode == 109) && !e.ctrlKey && !e.shiftKey)//-
 	{
 		lenak();
 	}
@@ -428,6 +480,11 @@ $(document).keyup(function(e) {
 	}
 });
 $(function (){
+	document.getElementById("cik_len").innerHTML = lsolis;
+	document.getElementById("cik_atr").innerHTML = asolis;
+	document.getElementById("dat_iel").innerHTML = lasa_datus;
+	document.getElementById("cil_att").innerHTML = cilindri[1]-cilindri[0];
+	document.getElementById("sak_att").innerHTML = cilindri[0];
 	adatu_bidisana = setInterval(bida_adatas, cikls);
 })
 $(function () {

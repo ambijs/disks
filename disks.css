@@ -57,9 +57,41 @@
     clear: both;
     height: 0;
 }
-.darits
+.dodas
 {
-	background-color:green;
+	background-color:yellow;
+}
+.darits0
+{
+	background-color:#00CC00;
+	color:#FFFFFF;
+}
+.darits1
+{
+	background-color:#22AA00;
+	color:#FFFFFF;
+}
+.darits2
+{
+	background-color:#448800;
+	color:#FFFFFF;
+}
+.darits3
+{
+	background-color:#666600;
+	color:#FFFFFF;
+}
+.darits4
+{
+	background-color:#884400;
+	color:#FFFFFF;
+}.darits5
+{
+	background-color:#AA0000;
+	color:#FFFFFF;
+}
+.mainigais{
+	font-weight: bold;
 }
 h4
 {
